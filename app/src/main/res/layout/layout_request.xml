@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="7dp"
+    android:background="@android:color/white"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <LinearLayout
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_amount"
+                android:textColor="#0A090B"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="# 5,000"
+                android:textSize="22dp"/>
+            <TextView
+                android:id="@+id/txt_note"
+                android:textColor="#ADABAF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="i need a refund of the amount i used payment "
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/txt_status"
+                android:textColor="#ADABAF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pending"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/txt_regDate"
+                android:textColor="#ADABAF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01-09-2020"
+                android:textSize="14dp"/>
+
+            <TextView
+                android:id="@+id/txt_approvedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01-09-2020"
+                android:textColor="#B71C1C"
+                android:textSize="14dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_marked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_done_24"/>
+
+                <ImageView
+                    android:id="@+id/img_rejected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_clear_24"/>
+
+                <ImageView
+                    android:id="@+id/img_paid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_payment_24"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bnt_accpt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/bt_white_pressed"
+            android:text="Accept"/>
+        <Button
+            android:id="@+id/bnt_rej"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/bt_error_red"
+            android:textColor="@color/bt_white_pressed"
+            android:text="CANCEL"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,328 @@
+{
+  "project_info": {
+    "project_number": "428412824838",
+    "firebase_url": "https://darwaydbmult.firebaseio.com",
+    "project_id": "darwaydbmult",
+    "storage_bucket": "darwaydbmult.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:128e6f9e457c00530f4287",
+        "android_client_info": {
+          "package_name": "com.darway.darwayvendingappmultiple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-01ub319mb6rtkfbcbrjachm0g92co7sv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.darway.darwayvendingappmultiple",
+            "certificate_hash": "622240bd65105119f29b05663f88c2306a29073a"
+          }
+        },
+        {
+          "client_id": "428412824838-231i6i6801qaahgvovdg30aeii7isc2r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.darway.darwayvendingappmultiple",
+            "certificate_hash": "aadfd27239ae71a4af5199652c143cdb7a272eec"
+          }
+        },
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:8af006346dc75b300f4287",
+        "android_client_info": {
+          "package_name": "com.darway.darwayvendingappmultipleclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-gbteujdfo5v4pp43rsop8pip8iu4p4s8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.darway.darwayvendingappmultipleclient",
+            "certificate_hash": "aadfd27239ae71a4af5199652c143cdb7a272eec"
+          }
+        },
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:934d499b32ab270f0f4287",
+        "android_client_info": {
+          "package_name": "com.example.cusstomers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:0b54dc5f1f3e0c830f4287",
+        "android_client_info": {
+          "package_name": "com.example.darwayadminappmulitlevel2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-5qih6nqnd4oea4ah9895io3f6p85qc27.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.darwayadminappmulitlevel2",
+            "certificate_hash": "aadfd27239ae71a4af5199652c143cdb7a272eec"
+          }
+        },
+        {
+          "client_id": "428412824838-pmvc9ok1cni85chtk6tu68ji2csc8sum.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.darwayadminappmulitlevel2",
+            "certificate_hash": "622240bd65105119f29b05663f88c2306a29073a"
+          }
+        },
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:b5a53ce05f1fa7d70f4287",
+        "android_client_info": {
+          "package_name": "com.example.darwaystaffattendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:1e2b3ee12204848f0f4287",
+        "android_client_info": {
+          "package_name": "com.example.darwayvendingadminapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:4c8ca432ec83064c0f4287",
+        "android_client_info": {
+          "package_name": "com.example.emp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:e8aef0f23b9c6ef70f4287",
+        "android_client_info": {
+          "package_name": "com.example.employee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428412824838:android:f240ca2ace7f121c0f4287",
+        "android_client_info": {
+          "package_name": "com.example.staffdarway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428412824838-gijgdthth9s00a16345fhu2s2gid0gn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.staffdarway",
+            "certificate_hash": "aadfd27239ae71a4af5199652c143cdb7a272eec"
+          }
+        },
+        {
+          "client_id": "428412824838-hcngvm7notmd27tpnleqttcgn70qprud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.staffdarway",
+            "certificate_hash": "622240bd65105119f29b05663f88c2306a29073a"
+          }
+        },
+        {
+          "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkgxIV5naJBn0HtVmBFpnyYAl8MwUd9YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428412824838-blbeoie82enfppulpdarfi58ufudsflv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
