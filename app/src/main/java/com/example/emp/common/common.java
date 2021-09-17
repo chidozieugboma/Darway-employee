@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.emp.model.Reguestor_Supervisor;
+import com.example.emp.model.ServerUserModel;
 import com.example.emp.model.StaffUserModel;
 import com.example.emp.model.TokenModel;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,6 +20,7 @@ import java.util.List;
 public class common {
     public static final String STAFF_ACCOUNT = "HR";
     public static final String STAFF_LOGIN ="Login_details";
+    public static final String SERVER_REF ="Server" ;
     public static final String ATTENTANCE = "Attendance";
     public static final String STAFF_ACCOUNT_ATTENDANCE ="HR_Attendance_Register" ;
     public static final String DEPARTMENT = "HR";
@@ -26,6 +28,8 @@ public class common {
     public static final String NOTI_TITLE ="title";
     public static final String NOTI_CONTENT = "content";
     public static final String STAFF_REQUESTORS_SUPERVISORS ="requester_supervisors";
+    public static final String STAFF_REQUEST_LOG ="request_log";
+    public static List<ServerUserModel> LOAD_ADMIN_STAFFS;
     public static String MY_REQUESTOR;
     public static List<Reguestor_Supervisor> REQUESTOR;
     public static List<StaffUserModel> LOAD_ALL_REG_STAFFS;

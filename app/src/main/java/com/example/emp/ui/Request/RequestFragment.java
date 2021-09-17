@@ -35,6 +35,7 @@ import com.example.emp.common.MySwiperHelper;
 import com.example.emp.common.common;
 import com.example.emp.model.EventBus.ToastEvent;
 import com.example.emp.model.EventBus.UpdateCustomerEvent;
+import com.example.emp.model.ServerUserModel;
 import com.example.emp.model.StaffUserModel;
 import com.example.emp.model.fundRequestModel;
 import com.example.emp.model.hrLogin;
@@ -126,7 +127,7 @@ public class RequestFragment extends Fragment {
         });
 
         //load all staffs in memory
-        loadAllStaff();
+        //loadAllStaff();
 
 
         return root;
@@ -209,8 +210,7 @@ public class RequestFragment extends Fragment {
 
                 createRequest(String.valueOf(accountNumber()),edt_title.getText().toString(), edt_amount.getText().toString(),
                         edt_first_Line.getSelectedItem().toString(),supervisorId,edt_details.getText().toString(),common.STAFF_SIGN_DETAILS.getStaffId(),
-                        common.STAFF_SIGN_DETAILS.getLevel());
-
+                        common.STAFF_SIGN_DETAILS.getLevel(),"TR-DR-"+accountNumber());
                 saveSuperVisors(supervisorKey,common.STAFF_SIGN_DETAILS.getUid());
             }
 
@@ -241,8 +241,9 @@ public class RequestFragment extends Fragment {
                                     if (useryModel.getLevel().equals("2"))
                                         tempList.add(useryModel.getStaffName());
                                 } else if ((common.currentServerUser.getLevel().equals("2"))) {
-                                    if (useryModel.getLevel().equals("3"))
-                                        tempList.add(useryModel.getStaffName());
+                                   /* if (useryModel.getLevel().equals("3"))
+                                        tempList.add(useryModel.getStaffName());*/
+                                    getSupervisorAbove2();
                                 }
                                 // Creating adapter for spinner
                                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, tempList);
@@ -267,48 +268,89 @@ public class RequestFragment extends Fragment {
     }
 
 
+    private void getSupervisorAbove2(){
+        List<String> tempList = new ArrayList<String>();
+        FirebaseDatabase.getInstance().getReference(common.SERVER_REF)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot itemSnapShot : snapshot.getChildren()) {
+                                ServerUserModel useryModel = itemSnapShot.getValue(ServerUserModel.class);
+                                if (useryModel != null) {
+
+                                }
+                                if ((common.currentServerUser.getLevel().equals("2"))) {
+                                    if (useryModel.getLevel().equals("3"))
+                                        tempList.add(useryModel.getName());
+                                }
+                                // Creating adapter for spinner
+                                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, tempList);
+
+                                // Drop down layout style - list view with radio button
+                                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                                // attaching data adapter to spinner
+                                edt_first_Line.setAdapter(dataAdapter);
+                            }
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+
+    }
+
+
+
     private int accountNumber(){
-        int max=900000;
-        int min=650000;
+        int max=90000000;
+        int min=65000000;
         Random random = new Random();
         int randomNumber = random.nextInt(max - min) + min;
         return randomNumber;
     }
 
 
-    private List<StaffUserModel> loadAllStaff(){
-        List<StaffUserModel> tempList=new ArrayList<>();
+    private void writeToLog(int pos,fundRequestModel model){
+        Date currentTime = Calendar.getInstance().getTime();
+        Map<String,Object> writeLog=new HashMap<>();
+        writeLog.put("title",model.getTitle());
+        writeLog.put("amount",model.getAmount());
+        writeLog.put("staffId",model.getStaffId());
+        writeLog.put("detail",model.getDetail());
+        writeLog.put("curretSignedTo",model.getSupervisor());
+        writeLog.put("firstLevelApprovalBy",model.getFirstLevelApprovalBy());
+        writeLog.put("SecondLevelApprovalBy",model.getSecondLevelApprovalBy());
+        writeLog.put("status",model.getStatus());
+        writeLog.put("regDate", DateFormat.getDateInstance(DateFormat.MEDIUM).format(currentTime));
         FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
                 .child(common.currentCompany)
-                .child(common.STAFF_ACCOUNT)
-                .child(common.STAFF_LOGIN)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .child(common.STAFF_REQUEST_LOG)
+                .child(fundRequestModels.get(pos).getUId())
+                .push()
+                .setValue(writeLog)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            for (DataSnapshot itemSnapShot : snapshot.getChildren()) {
-                                StaffUserModel useryModel = itemSnapShot.getValue(StaffUserModel.class);
-                                if(useryModel!=null){
-                                    // useryModel.setUid(snapshot.getKey());
-                                }
-                                tempList.add(useryModel);
-                            }
-                            common.LOAD_ALL_REG_STAFFS=tempList;
-                        }
+                    public void onSuccess(Void unused) {
 
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-
-
-        return tempList;
     }
 
-    private void createRequest(String account,String title,String amount,String supervisor,String supervisorId,String detail,String staffId,String staffLevel){
+    private void createRequest(String account,String title,String amount,String supervisor,String supervisorId,String detail,String staffId,String staffLevel,String transId){
         String pussh= FirebaseDatabase.getInstance().getReference(common.STAFF_REQUEST).push().getKey();
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Date currentTime = Calendar.getInstance().getTime();
@@ -325,6 +367,9 @@ public class RequestFragment extends Fragment {
         addData.put("posRequest","0");
         addData.put("approvalLevel",staffLevel);
         addData.put("pushKey",pussh);
+        addData.put("transId",transId);
+        addData.put("curretSignedTo",supervisor);
+        addData.put("firstLevelApprovalBy",supervisor);
         addData.put("regDate", DateFormat.getDateInstance(DateFormat.MEDIUM).format(currentTime));
         addData.put("approvedDate", DateFormat.getDateInstance(DateFormat.MEDIUM).format(currentTime));
         FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)

@@ -3,31 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/home_group">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_baseline_home_24"
             android:title="@string/menu_home" />
+    </group>
+    <group android:id="@+id/sign_in_group">
         <item
             android:id="@+id/nav_sign_in"
             android:icon="@drawable/ic_baseline_follow_the_signs_24"
             android:title="@string/menu_sign" />
+    </group>
+    <group android:id="@+id/request_group">
         <item
             android:id="@+id/nav_request"
             android:icon="@drawable/ic_baseline_local_grocery_store_24"
             android:title="@string/menu_myrequest" />
+    </group>
+    <group android:id="@+id/my_request_group">
         <item
             android:id="@+id/nav_myrequest"
             android:icon="@drawable/ic_baseline_device_hub_24"
             android:title="@string/menu_request" />
+    </group>
 
+    <group android:id="@+id/my_tamper_group">
         <item
-            android:id="@+id/nav_temper"
+            android:id="@+id/nav_tamper"
             android:icon="@drawable/ic_baseline_book_online_24"
             android:title="@string/menu_temper" />
+    </group>
+
+    <group android:id="@+id/signout_group">
         <item
             android:id="@+id/nav_signout"
             android:icon="@drawable/ic_baseline_login_24"
             android:title="@string/menu_signout" />
     </group>
+
 </menu>

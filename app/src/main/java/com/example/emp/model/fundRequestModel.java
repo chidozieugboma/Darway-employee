@@ -1,13 +1,13 @@
 package com.example.emp.model;
 
 public class fundRequestModel {
-    String key,title,amount,detail,supervisor,supervisorId,staffId,status,regDate,approvedDate,UId,posRequest,pushKey,approvalLevel;
+    String key,title,amount,detail,supervisor,supervisorId,staffId,status,regDate,approvedDate,UId,posRequest,pushKey,approvalLevel,transId,curretSignedTo,firstLevelApprovalBy,SecondLevelApprovalBy;
 
     public fundRequestModel() {
     }
 
 
-    public fundRequestModel(String key, String title, String amount, String detail, String supervisor, String supervisorId, String staffId, String status, String regDate, String approvedDate, String UId, String posRequest, String pushKey, String approvalLevel) {
+    public fundRequestModel(String key, String title, String amount, String detail, String supervisor, String supervisorId, String staffId, String status, String regDate, String approvedDate, String UId, String posRequest, String pushKey, String approvalLevel, String transId, String curretSignedTo, String firstLevelApprovalBy, String secondLevelApprovalBy) {
         this.key = key;
         this.title = title;
         this.amount = amount;
@@ -22,6 +22,42 @@ public class fundRequestModel {
         this.posRequest = posRequest;
         this.pushKey = pushKey;
         this.approvalLevel = approvalLevel;
+        this.transId = transId;
+        this.curretSignedTo = curretSignedTo;
+        this.firstLevelApprovalBy = firstLevelApprovalBy;
+        SecondLevelApprovalBy = secondLevelApprovalBy;
+    }
+
+    public String getCurretSignedTo() {
+        return curretSignedTo;
+    }
+
+    public void setCurretSignedTo(String curretSignedTo) {
+        this.curretSignedTo = curretSignedTo;
+    }
+
+    public String getFirstLevelApprovalBy() {
+        return firstLevelApprovalBy;
+    }
+
+    public void setFirstLevelApprovalBy(String firstLevelApprovalBy) {
+        this.firstLevelApprovalBy = firstLevelApprovalBy;
+    }
+
+    public String getSecondLevelApprovalBy() {
+        return SecondLevelApprovalBy;
+    }
+
+    public void setSecondLevelApprovalBy(String secondLevelApprovalBy) {
+        SecondLevelApprovalBy = secondLevelApprovalBy;
+    }
+
+    public String getTransId() {
+        return transId;
+    }
+
+    public void setTransId(String transId) {
+        this.transId = transId;
     }
 
     public String getApprovalLevel() {
