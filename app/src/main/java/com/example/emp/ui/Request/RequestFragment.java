@@ -14,11 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emp.Callback.ChangeMenuClick;
 import com.example.emp.R;
+import com.example.emp.Remote.IFCMService;
+import com.example.emp.Remote.RetrofitFCMClient;
 import com.example.emp.adapter.fundRequetAdapter;
 import com.example.emp.common.MySwiperHelper;
 import com.example.emp.common.common;
@@ -37,8 +37,10 @@ import com.example.emp.model.EventBus.ToastEvent;
 import com.example.emp.model.EventBus.UpdateCustomerEvent;
 import com.example.emp.model.ServerUserModel;
 import com.example.emp.model.StaffUserModel;
+import com.example.emp.model.TokenModel;
 import com.example.emp.model.fundRequestModel;
-import com.example.emp.model.hrLogin;
+import com.example.emp.model.requestTypeModel;
+import com.example.emp.sendNotificationPack.FCMSendData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,10 +62,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dmax.dialog.SpotsDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.SingleObserver;
+
 
 public class RequestFragment extends Fragment {
 
@@ -71,14 +80,17 @@ public class RequestFragment extends Fragment {
     private RequestViewModel requestViewModel1;
     private AlertDialog dialog;
     private Unbinder unbinder;
-    Spinner edt_first_Line;
+    Spinner edt_first_Line,spin_request_type;
     String supervisorId,supervisorKey;
     String m;
+    EditText edt_title;
+    private IFCMService ifcmService;
    // hrLogin mstaffId;
 
     private List<fundRequestModel> fundRequestModels;
     fundRequetAdapter adapter;
     private LayoutAnimationController layoutAnimationController;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     @BindView(R.id.recycleRequest)
@@ -126,8 +138,8 @@ public class RequestFragment extends Fragment {
             recycleRequest.setLayoutAnimation(layoutAnimationController);
         });
 
-        //load all staffs in memory
-        //loadAllStaff();
+
+        ifcmService = RetrofitFCMClient.getInstance().create(IFCMService.class);
 
 
         return root;
@@ -179,12 +191,14 @@ public class RequestFragment extends Fragment {
         builder.setTitle("Fund Request");
         //get staff supervisor
         getSupervisor();
+        getRequestTypes();
 
         @SuppressLint("InflateParams") View itemView =LayoutInflater.from(getContext()).inflate(R.layout.layout_add_request,null);
-        EditText edt_title= itemView.findViewById(R.id.edt_title);
+        edt_title= itemView.findViewById(R.id.edt_title);
         EditText edt_amount= itemView.findViewById(R.id.edt_amount);
         edt_first_Line=itemView.findViewById(R.id.edt_first_Line);
         EditText edt_details=itemView.findViewById(R.id.edt_details);
+        spin_request_type=itemView.findViewById(R.id.spin_request_type);
         //Add code
 
 
@@ -200,17 +214,33 @@ public class RequestFragment extends Fragment {
                 Toast.makeText(getContext(), "kindly fill all required fields", Toast.LENGTH_LONG).show();
             }else {
 
-                for(StaffUserModel staffs: common.LOAD_ALL_REG_STAFFS){
-                    if(staffs.getStaffName().matches(edt_first_Line.getSelectedItem().toString())){
-                        supervisorId=staffs.getStaffId();
-                        supervisorKey=staffs.getUid();
+                if(common.currentServerUser.getLevel().equals("1")){
+                    for(StaffUserModel staffs: common.LOAD_ALL_REG_STAFFS){
+                        if(staffs.getStaffName().matches(edt_first_Line.getSelectedItem().toString())){
+                            supervisorId=staffs.getStaffId();
+                            supervisorKey=staffs.getUid();
+                            common.SUPERVISORID=supervisorId;
 
+
+                        }
+                    }
+                }else {
+                    for(ServerUserModel staffs: common.LOAD_ADMIN_STAFFS){
+                        if(staffs.getName().matches(edt_first_Line.getSelectedItem().toString())){
+                            supervisorId=staffs.getStaffId();
+                            supervisorKey=staffs.getUid();
+                            common.SUPERVISORID=supervisorId;
+
+
+                        }
                     }
                 }
 
+
+
                 createRequest(String.valueOf(accountNumber()),edt_title.getText().toString(), edt_amount.getText().toString(),
                         edt_first_Line.getSelectedItem().toString(),supervisorId,edt_details.getText().toString(),common.STAFF_SIGN_DETAILS.getStaffId(),
-                        common.STAFF_SIGN_DETAILS.getLevel(),"TR-DR-"+accountNumber());
+                        common.STAFF_SIGN_DETAILS.getLevel(),"TR-DR-"+accountNumber(),spin_request_type.getSelectedItem().toString());
                 saveSuperVisors(supervisorKey,common.STAFF_SIGN_DETAILS.getUid());
             }
 
@@ -220,6 +250,39 @@ public class RequestFragment extends Fragment {
         dialog.show();
 
 
+    }
+
+    private void getRequestTypes(){
+        List<String> tempList=new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
+                .child(common.currentCompany)
+                .child(common.REQUEST_TYPES)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            for(DataSnapshot fn:snapshot.getChildren()){
+                                requestTypeModel model=fn.getValue(requestTypeModel.class);
+                                tempList.add(model.getRequestName());
+                            }
+
+
+                            // Creating adapter for spinner
+                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, tempList);
+
+                            // Drop down layout style - list view with radio button
+                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                            // attaching data adapter to spinner
+                            spin_request_type.setAdapter(dataAdapter);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void getSupervisor(){
@@ -316,7 +379,7 @@ public class RequestFragment extends Fragment {
         return randomNumber;
     }
 
-
+    //use to write to Log
     private void writeToLog(int pos,fundRequestModel model){
         Date currentTime = Calendar.getInstance().getTime();
         Map<String,Object> writeLog=new HashMap<>();
@@ -350,11 +413,12 @@ public class RequestFragment extends Fragment {
 
     }
 
-    private void createRequest(String account,String title,String amount,String supervisor,String supervisorId,String detail,String staffId,String staffLevel,String transId){
+    private void createRequest(String account,String title,String amount,String supervisor,String supervisorId,String detail,String staffId,String staffLevel,String transId,String requestType){
         String pussh= FirebaseDatabase.getInstance().getReference(common.STAFF_REQUEST).push().getKey();
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Date currentTime = Calendar.getInstance().getTime();
         Map<String,Object> addData=new HashMap<>();
+        addData.put("requestType",requestType);
         addData.put("key",account);
         addData.put("title",title);
         addData.put("amount",amount);
@@ -370,6 +434,7 @@ public class RequestFragment extends Fragment {
         addData.put("transId",transId);
         addData.put("curretSignedTo",supervisor);
         addData.put("firstLevelApprovalBy",supervisor);
+        addData.put("requestBy",common.STAFF_SIGN_DETAILS.getStaffName());
         addData.put("regDate", DateFormat.getDateInstance(DateFormat.MEDIUM).format(currentTime));
         addData.put("approvedDate", DateFormat.getDateInstance(DateFormat.MEDIUM).format(currentTime));
         FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
@@ -382,11 +447,57 @@ public class RequestFragment extends Fragment {
             if(task.isSuccessful()){
                 requestViewModel1.loadFundRequest();
                 EventBus.getDefault().postSticky(new ToastEvent(true,false));
+                sendNotification(supervisorKey);
             }else {
                 Toast.makeText(getContext(), "Save not successful", Toast.LENGTH_SHORT).show();
             }
 
         });
+
+    }
+
+    private void sendNotification(String key) {
+        FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
+                .child(common.currentCompany)
+                .child(common.STAFF_ACCOUNT)
+                .child(common.STAFF_TOKENS)
+                .child(key)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            TokenModel tokenModel=snapshot.getValue(TokenModel.class);
+                          //  sendNotifications(tokenModel.getToken(), "New Fund Request",edt_title.getText().toString().trim());
+/*                            Intent intent = new Intent(getContext(), RequestFragment.class);
+                            common.showNotification(getContext(),new Random().nextInt(),"New Fund Request",edt_title.getText().toString().trim(),intent);*/
+                           // sendMessage("New Fund Request",edt_title.getText().toString(),tokenModel.getToken());
+
+                            Map<String, String> notiData = new HashMap<>();
+                            notiData.put(common.NOTI_TITLE, "New Fund Request");
+                            notiData.put(common.NOTI_CONTENT, "You have new Request from " + tokenModel.getToken());
+
+                            FCMSendData sendData = new FCMSendData(common.createTopicOrder(), notiData);
+                            compositeDisposable.add(ifcmService.sendNotification(sendData)
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(fcmResponse -> {
+                                        Toast.makeText(getContext(), "Notification sent.", Toast.LENGTH_SHORT).show();
+                                        Log.i("myNoti",String.valueOf(fcmResponse.getFailure()));
+                                    },throwable -> {
+                                        Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }));
+
+
+                            Log.i("show01",key);
+                            Log.d("show02", "onDataChange: "+tokenModel.getToken());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
     }
 
@@ -399,17 +510,7 @@ public class RequestFragment extends Fragment {
                 .child(supervisorkey)
                 .push()
                 .setValue(oData)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "fail to save supervisor for requester", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(getContext(), "Saved successfully to supervisors for requester", Toast.LENGTH_SHORT).show();
-            }
-        });
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "fail to save supervisor for requester", Toast.LENGTH_SHORT).show()).addOnSuccessListener(unused -> Toast.makeText(getContext(), "Saved successfully to supervisors for requester", Toast.LENGTH_SHORT).show());
     }
 
 

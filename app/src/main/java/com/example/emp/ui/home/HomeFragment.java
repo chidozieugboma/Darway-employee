@@ -46,8 +46,10 @@ public class HomeFragment extends Fragment {
         });
 
         //load all staffs in memory
-        loadAllStaff();
-        getAdminStaffs();
+            loadAllStaff();
+            getAdminStaffs();
+
+
         requestor_supervisor(common.STAFF_SIGN_DETAILS.getUid());
         return root;
     }

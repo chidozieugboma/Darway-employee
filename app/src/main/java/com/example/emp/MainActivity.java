@@ -35,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.installations.FirebaseInstallations;
+//import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         dialog=new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
         cloudFunctions= RetrofitICloudClient.getInstance().create(ICloudFunctions.class);
-        // GenerateAccountNumber accountNumber=new GenerateAccountNumber();
-        // accoutnos=String.valueOf(accountNumber.AccountNumber());
         listener=firebaseAuthLocal ->{
             FirebaseUser user=firebaseAuthLocal.getCurrentUser();
             if(user !=null){
@@ -96,14 +96,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-    }
-
-    private int accountNumber(){
-        int max=900000;
-        int min=650000;
-        Random random = new Random();
-        int randomNumber = random.nextInt(max - min) + min;
-        return randomNumber;
     }
 
     private void checkUserFromFirebase(FirebaseUser user) {
@@ -150,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     private void showRegistrationDialog(FirebaseUser user) {
         androidx.appcompat.app.AlertDialog.Builder builder=new androidx.appcompat.app.AlertDialog.Builder(this);
@@ -216,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
         registerDialog.show();
 
     }
+
     private void registerUser(StaffUserModel userModel ){
         FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
                 .child(common.currentCompany)
@@ -276,6 +268,41 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     common.currentServerUser=userModel; // Important ! always needs to assign a value before use
                     //start activity soon
+                    if(common.currentCompany.equals("Unknown")){
+                        Toast.makeText(this, "Kindly Contact Darway coast to activate your account", Toast.LENGTH_SHORT).show();
+                    }else {
+                        startActivity(new Intent(MainActivity.this,HomeActivity.class));
+                        finish();
+                    }
+
+                }).addOnCompleteListener(task -> {
+            common.currentServerUser=userModel; // Important ! always needs to assign a value before use
+            //start activity soon
+            common.updateToken(MainActivity.this, (task.getResult()).getToken(),false,false);
+            if(common.currentCompany.equals("Unknown")) {
+                Toast.makeText(this, "Kindly Contact Darway coast to activate your account", Toast.LENGTH_SHORT).show();
+                showCodeDialog();
+            }else {
+                startActivity(new Intent(MainActivity.this,HomeActivity.class));
+                finish();
+            }
+
+
+        });
+
+
+
+
+
+    }
+
+ /*   private void goToHomeActivity(StaffUserModel userModel) {
+        FirebaseInstanceId.getInstance()
+                .getToken(true)
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    common.currentServerUser=userModel; // Important ! always needs to assign a value before use
+                    //start activity soon
                     if(common.currentCompany.equals("Unknown")) {
                         Toast.makeText(this, "Kindly Contact Darway coast to activate your account", Toast.LENGTH_SHORT).show();
                         showCodeDialog();
@@ -295,11 +322,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "kindly contact administrator to activate your account", Toast.LENGTH_SHORT).show();
                 showCodeDialog();
             }else {
-                    /* SharedPreferences.Editor editor = sharedpreferences.edit();
+                    *//* SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("company",common.currentServerUser.getCompanyName());
                         editor.putString("currentUserId",userModel.getUid());
                         editor.putString("currentUsername",userModel.getName());
-                        editor.commit();*/
+                        editor.commit();*//*
                 Intent intent=new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
@@ -308,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-    }
+    }*/
 
     private void showCodeDialog() {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(MainActivity.this);

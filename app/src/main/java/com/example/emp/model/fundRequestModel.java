@@ -1,13 +1,14 @@
 package com.example.emp.model;
 
 public class fundRequestModel {
-    String key,title,amount,detail,supervisor,supervisorId,staffId,status,regDate,approvedDate,UId,posRequest,pushKey,approvalLevel,transId,curretSignedTo,firstLevelApprovalBy,SecondLevelApprovalBy;
+    String key,title,amount,detail,supervisor,supervisorId,staffId,status,regDate,approvedDate,UId,posRequest,pushKey,approvalLevel,transId,curretSignedTo,firstLevelApprovalBy,SecondLevelApprovalBy,
+    requestBy,requestType;
 
     public fundRequestModel() {
     }
 
 
-    public fundRequestModel(String key, String title, String amount, String detail, String supervisor, String supervisorId, String staffId, String status, String regDate, String approvedDate, String UId, String posRequest, String pushKey, String approvalLevel, String transId, String curretSignedTo, String firstLevelApprovalBy, String secondLevelApprovalBy) {
+    public fundRequestModel(String key, String title, String amount, String detail, String supervisor, String supervisorId, String staffId, String status, String regDate, String approvedDate, String UId, String posRequest, String pushKey, String approvalLevel, String transId, String curretSignedTo, String firstLevelApprovalBy, String secondLevelApprovalBy, String requestBy, String requestType) {
         this.key = key;
         this.title = title;
         this.amount = amount;
@@ -26,6 +27,16 @@ public class fundRequestModel {
         this.curretSignedTo = curretSignedTo;
         this.firstLevelApprovalBy = firstLevelApprovalBy;
         SecondLevelApprovalBy = secondLevelApprovalBy;
+        this.requestBy = requestBy;
+        this.requestType = requestType;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 
     public String getCurretSignedTo() {
@@ -170,5 +181,13 @@ public class fundRequestModel {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+    }
+
+    public String getRequestBy() {
+        return requestBy;
+    }
+
+    public void setRequestBy(String requestBy) {
+        this.requestBy = requestBy;
     }
 }

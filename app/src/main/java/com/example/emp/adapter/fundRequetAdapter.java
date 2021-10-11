@@ -76,12 +76,14 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         dialog=new SpotsDialog.Builder().setContext(context).setCancelable(false).build();
 
-        holder.txt_amount.setText(new StringBuilder(fundRequestModels.get(position).getTitle()).append("(").append("₦").append(fundRequestModels.get(position).getAmount()).append(")"));
+        holder.txt_amount.setText(new StringBuilder(fundRequestModels.get(position).getTitle()).append("(").append("₦").append(common.formatAmount(Double.valueOf(fundRequestModels.get(position).getAmount()))).append(")"));
         holder.txt_note.setText(new StringBuilder().append(fundRequestModels.get(position).getDetail()));
         holder.txt_status.setText(new StringBuilder().append((fundRequestModels.get(position).getStatus())));
         holder.txt_regDate.setText(new StringBuilder("Date: ").append(fundRequestModels.get(position).getRegDate()));
         holder.txt_approvedDate.setText(new StringBuilder("Date: ").append(fundRequestModels.get(position).getApprovedDate()));
         holder.txt_trans_id.setText(new StringBuilder(fundRequestModels.get(position).getTransId()));
+        if(fundRequestModels.get(position).getRequestBy() !=null)
+        holder.txt_request_by.setText(new StringBuilder(fundRequestModels.get(position).getRequestBy()));
 
         if(common.currentServerUser.getLevel().equals("1") || common.currentServerUser.getLevel().equals("11")){
             holder.bnt_rej.setVisibility(View.INVISIBLE);
@@ -117,6 +119,7 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
 
         holder.itemView.setOnClickListener(view -> {
             // Toast.makeText(context, fixedCustomerModelsList.get(position).getPushKey(), Toast.LENGTH_SHORT).show();
+            if(!common.STAFF_SIGN_DETAILS.getLevel().equals("1"))
             showRequest();
         });
 
@@ -165,7 +168,7 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
 
     private void showRequest(){
         androidx.appcompat.app.AlertDialog.Builder builder=new androidx.appcompat.app.AlertDialog.Builder(context);
-        builder.setTitle("FUND REQUEST");
+        builder.setTitle("SELECT SUPERVISOR");
       //  builder.setMessage("Review Request");
 
         //get supervisor
@@ -241,17 +244,7 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
                 .child(supervisorkey)
                 .push()
                 .setValue(oData)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "fail to save supervisor for requester", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(context, "Saved successfully to supervisors for requester", Toast.LENGTH_SHORT).show();
-            }
-        });
+                .addOnFailureListener(e -> Toast.makeText(context, "fail to save supervisor for requester", Toast.LENGTH_SHORT).show()).addOnSuccessListener(unused -> Toast.makeText(context, "Saved successfully to supervisors for requester", Toast.LENGTH_SHORT).show());
     }
 
     private fundRequestModel getRequest(String status,String posRequest,String approvalLevel,String curretSignedTo,String secondLeavelApproval){
@@ -268,6 +261,7 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
     private void writeToLog(int pos,fundRequestModel model){
         Date currentTime = Calendar.getInstance().getTime();
         Map<String,Object> writeLog=new HashMap<>();
+        writeLog.put("requestType",model.getRequestType());
         writeLog.put("title",model.getTitle());
         writeLog.put("amount",model.getAmount());
         writeLog.put("staffId",model.getStaffId());
@@ -283,17 +277,9 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
                 .child(fundRequestModels.get(pos).getUId())
                 .push()
                 .setValue(writeLog)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
+                .addOnSuccessListener(unused -> {
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                }).addOnFailureListener(e -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show());
 
 
     }
@@ -319,9 +305,6 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
             Toast.makeText(context, "request has been "+myStatus, Toast.LENGTH_SHORT).show();
             requestViewModel.loadFundRequest();
         });
-        //this would refresh yhe view and reload the request records
-
-
     }
 
     @Override
@@ -331,7 +314,7 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_amount,txt_note,txt_status,txt_regDate,txt_approvedDate,txt_trans_id;
+        TextView txt_amount,txt_note,txt_status,txt_regDate,txt_approvedDate,txt_trans_id,txt_request_by;
         ImageView img_marked,img_rejected,img_paid;
         Button bnt_accpt,bnt_rej;
         public MyViewHolder(@NonNull View itemView) {
@@ -347,11 +330,7 @@ public class fundRequetAdapter extends RecyclerView.Adapter<fundRequetAdapter.My
             img_rejected=itemView.findViewById(R.id.img_rejected);
             img_paid=itemView.findViewById(R.id.img_paid);
             txt_trans_id=itemView.findViewById(R.id.txt_trans_id);
-
-
-
-
-            // ButterKnife.bind(this, itemView);
+            txt_request_by=itemView.findViewById(R.id.txt_request_by);
         }
     }
 }

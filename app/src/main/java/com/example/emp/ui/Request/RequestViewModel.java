@@ -1,7 +1,5 @@
 package com.example.emp.ui.Request;
 
-import android.telephony.CellSignalStrength;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,8 +7,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.emp.Callback.iFundRequestCallbackListener;
 import com.example.emp.common.common;
 import com.example.emp.model.fundRequestModel;
-import com.example.emp.model.Reguestor_Supervisor;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -55,7 +51,7 @@ public class RequestViewModel extends ViewModel implements iFundRequestCallbackL
                                 if (useryModel != null) {
                                     // useryModel.setKey(itemSnapShot.getKey());
                                 }
-                                if(!useryModel.getPosRequest().equals(common.STAFF_SIGN_DETAILS.getLevel()))
+                                if(!useryModel.getPosRequest().equals(common.STAFF_SIGN_DETAILS.getLevel()) && useryModel.getStatus().equals("Pending"))
                                 tempList.add(useryModel);
                             }
                             if(tempList.size()>0)
