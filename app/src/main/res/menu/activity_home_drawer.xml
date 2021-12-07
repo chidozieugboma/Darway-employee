@@ -15,6 +15,14 @@
             android:icon="@drawable/ic_baseline_follow_the_signs_24"
             android:title="@string/menu_sign" />
     </group>
+
+    <group android:id="@+id/Attendance_group">
+        <item
+            android:id="@+id/nav_Attendance"
+            android:icon="@drawable/ic_baseline_chair_alt_24"
+            android:title="@string/menu_attendance" />
+    </group>
+
     <group android:id="@+id/request_group">
         <item
             android:id="@+id/nav_request"

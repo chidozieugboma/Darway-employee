@@ -1,13 +1,15 @@
-package com.example.emp.ui.myRequest;
+package com.example.emp.ui.fingerPrinter;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.emp.Callback.iFundRequestCallbackListener;
+import com.example.emp.Callback.iStaffFingerPrint;
 import com.example.emp.common.common;
 import com.example.emp.model.Reguestor_Supervisor;
 import com.example.emp.model.fundRequestModel;
+import com.example.emp.model.staff_FingerPrint;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -16,66 +18,62 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class myRequestViewModel extends ViewModel implements iFundRequestCallbackListener {
-    private MutableLiveData<List<fundRequestModel>> fundRequestModelList;
+public class fingerViewModel extends ViewModel implements iStaffFingerPrint {
+    private MutableLiveData<List<staff_FingerPrint>> staffFingerModelList;
     private MutableLiveData<String> messageError=new MutableLiveData<>();
-    private iFundRequestCallbackListener iFundRequestCallbackListener;
-    List<fundRequestModel> tempList;
+    private iStaffFingerPrint iStaffFingerPrint;
+    List<staff_FingerPrint> tempList;
 
-    public myRequestViewModel() {
-        iFundRequestCallbackListener=this;
+    public fingerViewModel() {
+        iStaffFingerPrint=this;
     }
 
 
-    MutableLiveData<List<fundRequestModel>> getFundRequestModelList() {
-        if(fundRequestModelList==null){
-            fundRequestModelList=new MutableLiveData<>();
+    MutableLiveData<List<staff_FingerPrint>> getstaffFingerModelList() {
+        if(staffFingerModelList==null){
+            staffFingerModelList=new MutableLiveData<>();
             messageError=new MutableLiveData<>();
 
             tempList=new ArrayList<>();
 
-            if(common.REQUESTOR!=null)
-            for(Reguestor_Supervisor requestor:common.REQUESTOR){
-                loadFundRequest(requestor.getRequester());
-                common.MY_REQUESTOR=requestor.getRequester();
-            }
+            if(common.currentServerUser.getLevel().equals("12"))
+            loadStaffSiginRequest();
         }
-        return fundRequestModelList;
+        return staffFingerModelList;
     }
 
 
 
 
 
-    public void loadFundRequest(String requestor) {
+    public void loadStaffSiginRequest() {
         FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
                 .child(common.currentCompany)
-                .child(common.STAFF_REQUEST)
-                .child(requestor)
+                .child(common.STAFF_ACCOUNT)
+                .child(common.STAFF_ACCOUNT_ATTENDANCE)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot itemSnapShot : dataSnapshot.getChildren()) {
-                                fundRequestModel useryModel = itemSnapShot.getValue(fundRequestModel.class);
+                                staff_FingerPrint useryModel = itemSnapShot.getValue(staff_FingerPrint.class);
                                 if (useryModel != null) {
                                     // useryModel.setKey(itemSnapShot.getKey());
                                 }
-                                if(!useryModel.getPosRequest().equals(common.STAFF_SIGN_DETAILS.getLevel()) && useryModel.getStatus().equals("Pending"))
                                 tempList.add(useryModel);
                             }
                             if(tempList.size()>0)
-                                iFundRequestCallbackListener.onFundRequestLoadSuccess(tempList);
+                                iStaffFingerPrint.onStaffFingerPrintLoadSuccess(tempList);
                             else
-                                iFundRequestCallbackListener.onFundRequestLoadFailed("request database is empty!");
+                                iStaffFingerPrint.onStaffFingerPrintFailed("request database is empty!");
 
                         }else
-                            iFundRequestCallbackListener.onFundRequestLoadFailed("request do not exits!");
+                            iStaffFingerPrint.onStaffFingerPrintFailed("request do not exits!");
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        iFundRequestCallbackListener.onFundRequestLoadFailed(databaseError.getMessage());
+                        iStaffFingerPrint.onStaffFingerPrintFailed(databaseError.getMessage());
 
                     }
                 });
@@ -87,13 +85,15 @@ public class myRequestViewModel extends ViewModel implements iFundRequestCallbac
         return messageError;
     }
 
+
     @Override
-    public void onFundRequestLoadSuccess(List<fundRequestModel> fundRequestModels) {
-        fundRequestModelList.setValue(fundRequestModels);
+    public void onStaffFingerPrintLoadSuccess(List<staff_FingerPrint> StaffFingerPrintModels) {
+        staffFingerModelList.setValue(StaffFingerPrintModels);
     }
 
     @Override
-    public void onFundRequestLoadFailed(String message) {
+    public void onStaffFingerPrintFailed(String message) {
         messageError.setValue(message);
     }
+
 }

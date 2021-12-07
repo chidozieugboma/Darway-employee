@@ -12,6 +12,8 @@
     <string name="menu_sign">Sign-in</string>
     <string name="menu_temper">Temper</string>
     <string name="menu_request">Fund Request</string>
+    <string name="menu_attendance">Attendance</string>
+    <string name="menu_finger">Sign In</string>
     <string name="menu_myrequest">My Request</string>
     <string name="menu_signout">SignOut</string>
     <string name="title_activity_maps">MapsActivity</string>

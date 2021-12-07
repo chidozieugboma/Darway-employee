@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +51,9 @@ public class HomeFragment extends Fragment {
             getAdminStaffs();
 
 
+
         requestor_supervisor(common.STAFF_SIGN_DETAILS.getUid());
+        //requestor_supervisor("uSNAyq2mB4bPDtZnDgDmoel6yp32");
         return root;
     }
 
@@ -91,6 +94,7 @@ public class HomeFragment extends Fragment {
 
         return tempList;
     }
+
 
     private void getAdminStaffs(){
         List<ServerUserModel> tempList=new ArrayList<>();

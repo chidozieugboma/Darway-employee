@@ -12,6 +12,17 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_finger"
+        android:label="@string/menu_finger"
+        tools:layout="@layout/fragment_finger_print" />
+
+    <fragment
+        android:id="@+id/nav_Attendance"
+        android:name="com.example.emp.ui.fingerPrinter.fingerFragment"
+        android:label="@string/menu_attendance"
+        tools:layout="@layout/layout_staff_sign_in" />
+
+    <fragment
         android:id="@+id/nav_request"
         android:name="com.example.emp.ui.Request.RequestFragment"
         android:label="@string/menu_request"

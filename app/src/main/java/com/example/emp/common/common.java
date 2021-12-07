@@ -37,6 +37,7 @@ public class common {
     public static final String SERVER_REF ="Server" ;
     public static final String ATTENTANCE = "Attendance";
     public static final String STAFF_ACCOUNT_ATTENDANCE ="HR_Attendance_Register" ;
+    public static final String STAFF_ACCOUNT_ATTENDANCE_HISTORY ="HR_Attendance_Register_history" ;
     public static final String DEPARTMENT = "HR";
     public static final String TAMPER = "tampers";
     public static final String NOTI_TITLE ="title";
@@ -44,6 +45,7 @@ public class common {
     public static final String STAFF_REQUESTORS_SUPERVISORS ="requester_supervisors";
     public static final String STAFF_REQUEST_LOG ="request_log";
     public static final String REQUEST_TYPES ="request_types";
+    public static List<String> SUPERVISORLIST;
     public static String SUPERVISORID ;
     public static List<ServerUserModel> LOAD_ADMIN_STAFFS;
     public static String MY_REQUESTOR;

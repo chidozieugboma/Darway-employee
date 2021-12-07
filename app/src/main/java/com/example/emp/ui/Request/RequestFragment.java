@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -35,6 +36,7 @@ import com.example.emp.common.MySwiperHelper;
 import com.example.emp.common.common;
 import com.example.emp.model.EventBus.ToastEvent;
 import com.example.emp.model.EventBus.UpdateCustomerEvent;
+import com.example.emp.model.Reguestor_Supervisor;
 import com.example.emp.model.ServerUserModel;
 import com.example.emp.model.StaffUserModel;
 import com.example.emp.model.TokenModel;
@@ -85,6 +87,7 @@ public class RequestFragment extends Fragment {
     String m;
     EditText edt_title;
     private IFCMService ifcmService;
+    Boolean ans,checkSupervisor;
    // hrLogin mstaffId;
 
     private List<fundRequestModel> fundRequestModels;
@@ -203,6 +206,7 @@ public class RequestFragment extends Fragment {
 
 
 
+
         builder.setNegativeButton("CANCEL", (dialogInterface, i) -> {
 
         }).setPositiveButton("REQUEST",(dialogInterface, i) -> {
@@ -220,6 +224,7 @@ public class RequestFragment extends Fragment {
                             supervisorId=staffs.getStaffId();
                             supervisorKey=staffs.getUid();
                             common.SUPERVISORID=supervisorId;
+                           // checkSupervisor=checkSupervisory(supervisorKey,common.STAFF_SIGN_DETAILS.getUid());
 
 
                         }
@@ -230,6 +235,7 @@ public class RequestFragment extends Fragment {
                             supervisorId=staffs.getStaffId();
                             supervisorKey=staffs.getUid();
                             common.SUPERVISORID=supervisorId;
+                            //checkSupervisor=checkSupervisory(supervisorKey,common.STAFF_SIGN_DETAILS.getUid());
 
 
                         }
@@ -242,6 +248,7 @@ public class RequestFragment extends Fragment {
                         edt_first_Line.getSelectedItem().toString(),supervisorId,edt_details.getText().toString(),common.STAFF_SIGN_DETAILS.getStaffId(),
                         common.STAFF_SIGN_DETAILS.getLevel(),"TR-DR-"+accountNumber(),spin_request_type.getSelectedItem().toString());
                 saveSuperVisors(supervisorKey,common.STAFF_SIGN_DETAILS.getUid());
+
             }
 
         });
@@ -251,7 +258,6 @@ public class RequestFragment extends Fragment {
 
 
     }
-
     private void getRequestTypes(){
         List<String> tempList=new ArrayList<>();
         FirebaseDatabase.getInstance().getReference(common.COMPANY_REF)
@@ -300,7 +306,7 @@ public class RequestFragment extends Fragment {
                                 if (useryModel != null) {
 
                                 }
-                                if (common.currentServerUser.getLevel().equals("1") || common.currentServerUser.getLevel().equals("11")) {
+                                if (common.currentServerUser.getLevel().equals("1") || common.currentServerUser.getLevel().equals("11") ||common.currentServerUser.getLevel().equals("12")) {
                                     if (useryModel.getLevel().equals("2"))
                                         tempList.add(useryModel.getStaffName());
                                 } else if ((common.currentServerUser.getLevel().equals("2"))) {
@@ -508,7 +514,7 @@ public class RequestFragment extends Fragment {
                 .child(common.currentCompany)
                 .child(common.STAFF_REQUESTORS_SUPERVISORS)
                 .child(supervisorkey)
-                .push()
+               // .push()
                 .setValue(oData)
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "fail to save supervisor for requester", Toast.LENGTH_SHORT).show()).addOnSuccessListener(unused -> Toast.makeText(getContext(), "Saved successfully to supervisors for requester", Toast.LENGTH_SHORT).show());
     }

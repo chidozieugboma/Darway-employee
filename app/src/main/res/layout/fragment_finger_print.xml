@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="160sp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_key"/>
+
+        <TextView
+            android:id="@+id/txt_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/brandon_medium"
+            android:textSize="25dp"
+            android:padding="18dp"
+            android:textColor="#1E88E5"
+            android:text="Darway Staff Attendance"/>
+
+
+
+
+        <ImageView
+            android:id="@+id/img_fingerPrint"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/ic_body"/>
+
+        <TextView
+            android:id="@+id/txt_titleBelow"
+            android:layout_marginTop="20dp"
+            android:padding="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:fontFamily="@font/brandon_medium"
+            android:text="Please kindly click on the print scanner to sign in"/>
+
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
