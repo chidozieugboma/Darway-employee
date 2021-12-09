@@ -78,8 +78,10 @@ public class RequestViewModel extends ViewModel implements iFundRequestCallbackL
 
     @Override
     public void onFundRequestLoadSuccess(List<fundRequestModel> fundRequestModels) {
-        if(fundRequestModels!=null)
-        fundRequestModelList.setValue(fundRequestModels);
+        if(fundRequestModels!=null){
+            fundRequestModelList.setValue(fundRequestModels);
+        }
+
     }
 
     @Override
